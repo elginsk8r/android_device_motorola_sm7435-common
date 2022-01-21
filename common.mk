@@ -118,9 +118,6 @@ PRODUCT_COPY_FILES += \
 
 $(call soong_config_set,android_hardware_audio,run_64bit,true)
 
-# Charger
-WITH_LINEAGE_CHARGER := false
-
 # Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@4.0-impl-qti-display \
