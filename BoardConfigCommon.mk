@@ -52,7 +52,8 @@ TARGET_KERNEL_SOURCE := kernel/motorola/sm7435
 TARGET_KERNEL_CONFIG := \
     gki_defconfig \
     vendor/parrot_GKI.config \
-    vendor/ext_config/moto-parrot.config
+    vendor/ext_config/moto-parrot.config \
+    vendor/debugfs.config
 
 TARGET_KERNEL_EXT_MODULE_ROOT := kernel/motorola/sm7435-modules
 
