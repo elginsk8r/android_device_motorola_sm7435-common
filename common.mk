@@ -72,8 +72,7 @@ PRODUCT_PACKAGES += \
     libqcomvisualizer \
     libqcomvoiceprocessing \
     libfmpal \
-    sound_trigger.primary.parrot \
-    vendor.qti.hardware.AGMIPC@1.0-service
+    sound_trigger.primary.parrot
 
 AUDIO_HAL_DIR := hardware/qcom-caf/sm8450/audio/primary-hal
 
