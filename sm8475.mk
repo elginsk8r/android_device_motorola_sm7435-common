@@ -218,6 +218,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     libpalclient:64
 
+# Memtrack
+PRODUCT_PACKAGES += \
+    vendor.qti.hardware.memtrack-service
+
 # MotoActions
 PRODUCT_PACKAGES += \
     MotoActions \
