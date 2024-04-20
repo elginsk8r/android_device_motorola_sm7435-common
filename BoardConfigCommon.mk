@@ -81,6 +81,7 @@ BOARD_KERNEL_CMDLINE += \
     printk.devkmsg=on
 BOARD_BOOTCONFIG += \
     androidboot.hardware=qcom \
+    androidboot.load_modules_parallel=true \
     androidboot.memcg=1 \
     androidboot.usbcontroller=a600000.dwc3
 BOARD_KERNEL_IMAGE_NAME := Image
