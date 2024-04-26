@@ -73,27 +73,27 @@ PRODUCT_PACKAGES_DEBUG += \
 
 # Audio
 PRODUCT_PACKAGES += \
-    android.hardware.audio@7.0-impl:64 \
-    android.hardware.audio.effect@7.0-impl:64 \
+    android.hardware.audio@7.0-impl \
+    android.hardware.audio.effect@7.0-impl \
     android.hardware.audio.service \
-    android.hardware.bluetooth.audio-impl:64 \
-    android.hardware.soundtrigger@2.3-impl:64 \
+    android.hardware.bluetooth.audio-impl \
+    android.hardware.soundtrigger@2.3-impl \
     audioadsprpcd \
-    audio.bluetooth.default:64 \
+    audio.bluetooth.default \
     audio.r_submix.default \
-    audio.primary.parrot:64 \
-    audio.usb.default:64 \
-    lib_bt_aptx:64 \
-    lib_bt_ble:64 \
-    lib_bt_bundle:64 \
-    libagm_compress_plugin:64 \
-    libagm_mixer_plugin:64 \
-    libagm_pcm_plugin:64 \
-    libqcompostprocbundle:64 \
-    libqcomvisualizer:64 \
-    libqcomvoiceprocessing:64 \
-    libfmpal:64 \
-    sound_trigger.primary.parrot:64 \
+    audio.primary.parrot \
+    audio.usb.default \
+    lib_bt_aptx \
+    lib_bt_ble \
+    lib_bt_bundle \
+    libagm_compress_plugin \
+    libagm_mixer_plugin \
+    libagm_pcm_plugin \
+    libqcompostprocbundle \
+    libqcomvisualizer \
+    libqcomvoiceprocessing \
+    libfmpal \
+    sound_trigger.primary.parrot \
     vendor.qti.hardware.AGMIPC@1.0-service
 
 PRODUCT_COPY_FILES += \
@@ -107,8 +107,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/sku_parrot/audio_policy_configuration_a2dp_offload_disabled.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_parrot/audio_policy_configuration_a2dp_offload_disabled.xml \
     $(LOCAL_PATH)/audio/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml \
     $(LOCAL_PATH)/audio/card-defs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/card-defs.xml
-
-$(call soong_config_set,android_hardware_audio,run_64bit,true)
 
 # Charger
 WITH_LINEAGE_CHARGER := false
@@ -140,16 +138,16 @@ PRODUCT_PACKAGES += \
 
 # GPS
 PRODUCT_PACKAGES += \
-    android.hardware.gnss@2.1-impl-qti:64 \
-    android.hardware.gnss-aidl-impl-qti:64 \
+    android.hardware.gnss@2.1-impl-qti \
+    android.hardware.gnss-aidl-impl-qti \
     android.hardware.gnss-aidl-service-qti \
     gnss@2.0-base.policy \
     gnss@2.0-xtra-daemon.policy \
     gnss@2.0-xtwifi-client.policy \
     gnss@2.0-xtwifi-inet-agent.policy \
-    libbatching:64 \
-    libgeofencing:64 \
-    libgnss:64
+    libbatching \
+    libgeofencing \
+    libgnss
 
 PRODUCT_PACKAGES += \
     apdr.conf \
@@ -306,7 +304,7 @@ PRODUCT_VENDOR_PROPERTY_BLACKLIST := \
 
 # QMI
 PRODUCT_PACKAGES += \
-    libvndfwk_detect_jni.qti_vendor:64 # Needed by CNE app
+    libvndfwk_detect_jni.qti_vendor # Needed by CNE app
 
 # RFS MSM MPSS symlinks
 PRODUCT_PACKAGES += \
@@ -314,7 +312,7 @@ PRODUCT_PACKAGES += \
 
 # Sensors
 PRODUCT_PACKAGES += \
-    sensors.moto_sm7435:64 \
+    sensors.moto_sm7435 \
     android.hardware.sensors-service.multihal
 
 PRODUCT_COPY_FILES += \
