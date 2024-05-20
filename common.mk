@@ -90,10 +90,14 @@ PRODUCT_PACKAGES += \
     libagm_compress_plugin:64 \
     libagm_mixer_plugin:64 \
     libagm_pcm_plugin:64 \
+    libagmclient:64 \
+    libagmmixer:64 \
+    libbatterylistener:64 \
+    libfmpal:64 \
     libqcompostprocbundle:64 \
     libqcomvisualizer:64 \
     libqcomvoiceprocessing:64 \
-    libfmpal:64 \
+    libtinycompress:64 \
     sound_trigger.primary.taro:64 \
     vendor.qti.hardware.AGMIPC@1.0-service
 
