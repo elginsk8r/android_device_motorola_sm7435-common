@@ -38,6 +38,7 @@ PRODUCT_PACKAGES += \
     TelephonyResCommon \
     WifiResCommon \
     FrameworksResTarget \
+    NcmTetheringOverlay \
     WifiResTarget
 
 # A/B
