@@ -94,7 +94,6 @@ TARGET_KERNEL_EXT_MODULES += \
     motorola/drivers/power/sgm4154x_charger_lite \
     motorola/drivers/misc/utag \
     motorola/drivers/mmi_relay \
-    motorola/drivers/moto_f_mass_storage \
     motorola/drivers/misc/mmi_sys_temp \
     motorola/drivers/regulator/wl2864c \
     motorola/drivers/regulator/slg5bm43670 \
@@ -104,10 +103,7 @@ TARGET_KERNEL_EXT_MODULES += \
     motorola/drivers/input/touchscreen/goodix_berlin_mmi \
     motorola/drivers/input/touchscreen/focaltech_touch_v3 \
     motorola/drivers/input/misc/goodix_fod_mmi \
-    motorola/drivers/moto_mmap_fault \
-    motorola/drivers/moto_mm \
     motorola/drivers/moto_con_dfpar \
-    motorola/drivers/moto_swap \
     motorola/drivers/nfc/st21nfc
 
 # Platform
