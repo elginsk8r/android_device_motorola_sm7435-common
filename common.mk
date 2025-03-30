@@ -54,6 +54,7 @@ PRODUCT_PACKAGES_DEBUG += \
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth.audio-impl \
     audioadsprpcd \
+    audiohalservice.qti \
     audio.bluetooth.default \
     audio.r_submix.default \
     audio.usb.default \
@@ -63,7 +64,9 @@ PRODUCT_PACKAGES += \
     libagm_compress_plugin \
     libagm_mixer_plugin \
     libagm_pcm_plugin \
+    libagmipcservice \
     libalsautilsv2.vendor \
+    libaudiochargerlistener \
     libbatterylistener \
     libbundleaidl \
     libdownmixaidl \
@@ -72,11 +75,14 @@ PRODUCT_PACKAGES += \
     libhfp_pal \
     libloudnessenhanceraidl \
     libmediautils_vendor.vendor \
+    libmemunreachable.vendor \
+    libpalipcservice \
     libqcompostprocbundle \
     libqcomvisualizer \
     libqcomvoiceprocessing \
     libreverbaidl \
     libsndcardparser \
+    libsoundtriggerhal.qti \
     libvisualizeraidl \
     libvolumelistener \
     qti-audio-types-aidl-V1-ndk.vendor
