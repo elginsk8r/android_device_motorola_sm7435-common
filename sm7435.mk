@@ -371,7 +371,7 @@ PRODUCT_PACKAGES += \
     android.hardware.usb.gadget-service.qti \
     init.qcom.usb.rc \
     init.qcom.usb.sh \
-    usb_compositions.conf
+    moto_usb_compositions.conf
 
 PRODUCT_SOONG_NAMESPACES += \
     vendor/qcom/opensource/usb/etc
