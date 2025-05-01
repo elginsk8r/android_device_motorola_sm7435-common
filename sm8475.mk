@@ -309,6 +309,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.power-service-qti
 
+# Properties
+PRODUCT_VENDOR_PROPERTY_BLACKLIST := \
+    ro.carrier
+
 # QMI
 PRODUCT_PACKAGES += \
     libvndfwk_detect_jni.qti_vendor:64 # Needed by CNE app
