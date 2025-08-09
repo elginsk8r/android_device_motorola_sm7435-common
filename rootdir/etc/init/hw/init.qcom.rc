@@ -25,8 +25,11 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-import /vendor/etc/init/hw/init.qcom.usb.rc
+import /vendor/etc/init/hw/init.qti.ufs.rc
+#import /vendor/etc/init/hw/init.qcom.usb.rc
+import /vendor/etc/init/hw/init.qcom.test.rc
 import /vendor/etc/init/hw/init.target.rc
+import /vendor/etc/init/hw/init.qcom.factory.rc
 
 on early-init
   # create symlink for vendor mount points
@@ -360,6 +363,12 @@ on post-fs-data
     #Create dir for TUI
     mkdir /data/vendor/tui 0700 system drmrpc
 
+service nqnfcinfo /system/vendor/bin/nqnfcinfo
+    class late_start
+    group nfc
+    user system
+    oneshot
+
 service iop /system/vendor/bin/iop
     class main
     user root
@@ -379,7 +388,7 @@ service qcomsysd /system/vendor/bin/qcom-system-daemon
     group root diag oem_2901
     disabled
 
-on property:persist.vendor.qcomsysd.enabled=1 && property:sys.boot_completed=1
+on property:persist.vendor.qcomsysd.enabled=1
     enable qcomsysd
 
 on property:persist.vendor.qcomsysd.enabled=0
@@ -469,7 +478,6 @@ on property:vendor.media.target.version=*
 on property:vendor.media.target_variant=*
     setprop ro.media.xml_variant.codecs ${vendor.media.target_variant}
     setprop ro.media.xml_variant.codecs_performance ${vendor.media.target_variant}
-    setprop ro.media.xml_variant.profiles ${vendor.media.target_variant}
 
 service qcom-c_main-sh /vendor/bin/init.class_main.sh
     class main
@@ -506,6 +514,19 @@ service vendor.move_wifi_data /system/bin/move_wifi_data.sh
     disabled
     oneshot
 
+service ptt_socket_app /system/vendor/bin/ptt_socket_app -d
+    class main
+    user wifi
+    group wifi system inet net_admin
+    capabilities NET_ADMIN
+    oneshot
+
+service ptt_ffbm /system/vendor/bin/ptt_socket_app -f -d
+    user root
+    group root
+    disabled
+    oneshot
+
 service wifi_ftmd /system/vendor/bin/wifi_ftmd
     user system
     group system inet net_admin
@@ -525,6 +546,12 @@ service cnss-daemon /system/vendor/bin/cnss-daemon -n -l
 on property:sys.shutdown.requested=*
     write /sys/kernel/shutdown_wlan/shutdown 1
     stop cnss-daemon
+
+service ssgqmigd /vendor/bin/ssgqmigd
+    class late_start
+    user radio
+    group radio gps system
+    socket ssgqmig seqpacket 0660 radio inet
 
 service mlid /vendor/bin/mlid
     class late_start
@@ -576,6 +603,11 @@ on property:sys.boot_completed=1
 on property:ro.vendor.ril.mbn_copy_completed=1
     write /data/vendor/radio/copy_complete 1
 
+service qvop-daemon /vendor/bin/qvop-daemon
+    class late_start
+    user system
+    group system drmrpc
+
 service hostapd_fst /vendor/bin/hw/hostapd -dd -g /data/vendor/wifi/hostapd/global
     class main
     capabilities NET_ADMIN NET_RAW
@@ -608,6 +640,13 @@ service profiler_daemon /system/bin/profiler_daemon
     user root
     group root
     disabled
+
+#service charger /system/bin/charger
+#    class charger
+#    user system
+#    group system graphics input
+#    capabilities SYS_BOOT
+#    seclabel u:r:charger:s0
 
 service vendor.ssr_diag /system/vendor/bin/ssr_diag
     class late_start
@@ -677,6 +716,16 @@ service vendor.LKCore-rel /vendor/bin/LKCore
     user system
     group system log diag
 
+service qseeproxydaemon /system/vendor/bin/qseeproxydaemon
+    class late_start
+    user system
+    group system
+
+service esepmdaemon /system/vendor/bin/esepmdaemon
+    class core
+    user system
+    group nfc
+
 #on charger
 #    setprop persist.sys.usb.config mass_storage
 #    start qcom-post-boot
@@ -714,6 +763,16 @@ service vendor.hbtp /vendor/bin/hbtp_daemon
      group system
      capabilities SYS_NICE
      disabled
+
+service chre /vendor/bin/chre
+    class late_start
+    user system
+    group system
+    socket chre seqpacket 0660 root system
+    shutdown critical
+
+on property:vendor.chre.enabled=0
+   stop chre
 
 service bugreport /system/bin/dumpstate -d -p -B -z -o /data/user_de/0/com.android.shell/files/bugreports/bugreport
     class main
