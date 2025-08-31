@@ -49,9 +49,9 @@ vendor/etc/aualgo/aualgo_comp_azs.conf
 vendor/etc/init/audiohalservice_qti.rc
 vendor/etc/init/vendor.qti.audio-adsprpc-service.rc
 vendor/etc/vintf/manifest/soundtrigger.qti.xml
-vendor/lib64/hw/libaudiocorehal.default.so;DISABLE_CHECKELF
+vendor/lib64/hw/libaudiocorehal.default.so;DISABLE_CHECKELF;REQUIRED=manifest_audiocorehal_default.xml
 vendor/lib64/hw/libaudiocorehal.qti.so;DISABLE_CHECKELF
-vendor/lib64/hw/libaudioeffecthal.qti.so
+vendor/lib64/hw/libaudioeffecthal.qti.so;REQUIRED=audioeffectservice_qti.xml
 vendor/lib64/libadm.so
 vendor/lib64/libaualgo_foundation.so
 vendor/lib64/libaudio_log_utils.so
