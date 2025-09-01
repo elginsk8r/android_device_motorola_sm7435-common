@@ -36,7 +36,7 @@ vendor/lib64/libdsd2pcm.so
 vendor/lib64/libext_tflite_c.so
 vendor/lib64/libmcs.so
 vendor/lib64/libpal_net_if.so
-vendor/lib64/libqtigefar.so
+vendor/lib64/libqtigefar.so;DISABLE_DEPS
 
 # Audio - old AIDL dependencies
 vendor/lib64/android.hardware.bluetooth.audio-impl.so:vendor/lib64/android.hardware.bluetooth.audio-impl_prebuilt.so;FIX_SONAME
