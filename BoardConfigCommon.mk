@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-COMMON_PATH := device/motorola/sm8475-common
+COMMON_PATH := device/motorola/sm7435-common
 
 # Architecture
 TARGET_ARCH := arm64
@@ -56,8 +56,8 @@ BOARD_USES_GENERIC_KERNEL_IMAGE := true
 TARGET_KERNEL_SOURCE := kernel/motorola/sm8475
 TARGET_KERNEL_CONFIG := \
     gki_defconfig \
-    vendor/waipio_GKI.config \
-    vendor/ext_config/moto-waipio.config
+    vendor/parrot_GKI.config \
+    vendor/ext_config/moto-parrot.config
 
 TARGET_KERNEL_EXT_MODULE_ROOT := kernel/motorola/sm8475-modules
 
@@ -122,7 +122,7 @@ TARGET_KERNEL_EXT_MODULES += \
 
 # Platform
 BOARD_USES_QCOM_HARDWARE := true
-TARGET_BOARD_PLATFORM := taro
+TARGET_BOARD_PLATFORM := parrot
 
 BOARD_ROOT_EXTRA_SYMLINKS := \
     /vendor/fsg:/fsg
@@ -168,8 +168,8 @@ DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
     hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml \
     vendor/lineage/config/device_framework_matrix.xml
 DEVICE_MATRIX_FILE := hardware/qcom-caf/common/compatibility_matrix.xml
-DEVICE_MANIFEST_SKUS := cape
-DEVICE_MANIFEST_CAPE_FILES += $(COMMON_PATH)/manifest_cape.xml
+DEVICE_MANIFEST_SKUS := parrot
+DEVICE_MANIFEST_PARROT_FILES += $(COMMON_PATH)/manifest_parrot.xml
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
@@ -245,4 +245,4 @@ WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 
 # inherit from the proprietary version
-include vendor/motorola/sm8475-common/BoardConfigVendor.mk
+include vendor/motorola/sm7435-common/BoardConfigVendor.mk

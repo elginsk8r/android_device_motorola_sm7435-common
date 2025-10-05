@@ -17,7 +17,7 @@ from extract_utils.main import (
 )
 
 namespace_imports = [
-    'device/motorola/sm8475-common',
+    'device/motorola/sm7435-common',
     'hardware/motorola',
     'hardware/qcom-caf/sm8450',
     'hardware/qcom-caf/wlan',
@@ -100,7 +100,7 @@ blob_fixups: blob_fixups_user_type = {
 }
 
 module = ExtractUtilsModule(
-    'sm8475-common',
+    'sm7435-common',
     'motorola',
     blob_fixups=blob_fixups,
     lib_fixups=lib_fixups,
