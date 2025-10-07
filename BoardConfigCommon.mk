@@ -87,7 +87,7 @@ TARGET_KERNEL_EXT_MODULES := \
     qcom/opensource/display-drivers/msm \
     qcom/opensource/eva-kernel \
     qcom/opensource/video-driver \
-    qcom/opensource/wlan/qcacld-3.0/.qca6490
+    qcom/opensource/wlan/qcacld-3.0/.qca6750
 
 TARGET_KERNEL_EXT_MODULES += \
     motorola/drivers/mmi_annotate \
@@ -96,7 +96,7 @@ TARGET_KERNEL_EXT_MODULES += \
     motorola/drivers/power/mmi_charger \
     motorola/drivers/power/qti_glink_charger \
     motorola/drivers/power/qpnp_adaptive_charge \
-    motorola/drivers/power/cw2217b_fg_mmi \
+    motorola/drivers/power/bq27426_fg_mmi \
     motorola/drivers/power/sgm4154x_charger_lite \
     motorola/drivers/misc/utag \
     motorola/drivers/mmi_relay \
@@ -105,21 +105,18 @@ TARGET_KERNEL_EXT_MODULES += \
     motorola/drivers/misc/mmi_sys_temp \
     motorola/drivers/watchdogtest \
     motorola/drivers/regulator/wl2864c \
-    motorola/drivers/regulator/wl2868c \
     motorola/drivers/regulator/slg5bm43670 \
     motorola/drivers/sensors \
-    motorola/drivers/misc/sx937x_multi \
+    motorola/drivers/misc/sx937x \
     motorola/drivers/input/touchscreen/touchscreen_mmi \
     motorola/drivers/input/touchscreen/goodix_berlin_mmi \
-    motorola/drivers/input/touchscreen/stmicro_mmi \
     motorola/drivers/input/touchscreen/focaltech_touch_v3 \
-    motorola/drivers/input/misc/fpc_fps_mmi \
-    motorola/drivers/input/misc/rbs_fod_mmi \
+    motorola/drivers/input/misc/goodix_fod_mmi \
+    motorola/drivers/moto_mmap_fault \
     motorola/drivers/moto_mm \
+    motorola/drivers/moto_con_dfpar \
     motorola/drivers/moto_swap \
-    motorola/drivers/nfc/st21nfc \
-    motorola/drivers/nfc/sn2xx \
-    motorola/drivers/ese/st54x
+    motorola/drivers/nfc/st21nfc
 
 # Platform
 BOARD_USES_QCOM_HARDWARE := true

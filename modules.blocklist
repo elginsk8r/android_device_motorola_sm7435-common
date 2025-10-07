@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-only
-# Copyright (c) 2020, The Linux Foundation. All rights reserved.
+# Copyright (c) 2022, The Linux Foundation. All rights reserved.
 blocklist 8250_of
 blocklist dummy_hcd
 blocklist llcc_perfmon
@@ -62,7 +62,10 @@ blocklist torture
 blocklist locktorture
 blocklist rcutorture
 blocklist mmrm_test_module
-blocklist q5drv_linux
 blocklist limits_stat
-blocklist fpc1020_mmi
-blocklist goodix_fod_mmi
+blocklist limits_stress
+blocklist wil6210
+blocklist fpc1020_mmi.ko
+blocklist ets_bix_mmi.ko
+blocklist goodix_fod_mmi.ko
+blocklist anc_fps_mmi.ko
