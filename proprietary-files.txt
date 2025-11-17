@@ -185,6 +185,12 @@ vendor/bin/hw/vendor.qti.hardware.capabilityconfigstore@1.0-service
 vendor/etc/init/vendor.qti.hardware.capabilityconfigstore@1.0-service.rc
 vendor/lib64/hw/vendor.qti.hardware.capabilityconfigstore@1.0-impl.so
 
+# Connection Security
+vendor/bin/ssgtzd
+vendor/etc/init/ssgtzd.rc
+vendor/etc/ssg/ta_config.json
+vendor/etc/ssg/tz_whitelist.json
+
 # CVP
 vendor/lib64/libcv_common.so
 vendor/lib64/libcvp2_1.so
@@ -1059,12 +1065,6 @@ vendor/bin/vendor.qti.hardware.soter@1.0-provision
 vendor/etc/init/vendor.qti.hardware.soter@1.0-service.rc
 vendor/lib64/hw/vendor.qti.hardware.soter@1.0-impl.so
 vendor/lib64/vendor.qti.hardware.soter@1.0.so
-
-# SSGTZ
-vendor/bin/ssgtzd
-vendor/etc/init/ssgtzd.rc
-vendor/etc/ssg/ta_config.json
-vendor/etc/ssg/tz_whitelist.json
 
 # SSR
 vendor/bin/ssr_diag
