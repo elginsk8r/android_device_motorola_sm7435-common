@@ -67,6 +67,7 @@ PRODUCT_PACKAGES += \
     libagmipcservice \
     libalsautilsv2.vendor \
     libaudiochargerlistener \
+    libaudioutils_shim \
     libbatterylistener \
     libbundleaidl \
     libdownmixaidl \
