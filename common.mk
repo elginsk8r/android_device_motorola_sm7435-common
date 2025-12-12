@@ -61,6 +61,7 @@ PRODUCT_PACKAGES += \
     libagm_mixer_plugin \
     libagm_pcm_plugin \
     libalsautilsv2.vendor \
+    libaudioutils_shim \
     libbatterylistener \
     lib_bt_aptx \
     lib_bt_ble \
