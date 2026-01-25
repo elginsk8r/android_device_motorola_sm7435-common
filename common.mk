@@ -52,6 +52,10 @@ PRODUCT_PACKAGES_DEBUG += \
 
 # Audio
 PRODUCT_PACKAGES += \
+    android.hardware.audio.common-V1-ndk.vendor \
+    android.hardware.audio.core-V2-ndk.vendor \
+    android.hardware.audio.core.sounddose-V1-ndk.vendor \
+    android.hardware.audio.effect@7.0-impl \
     android.hardware.bluetooth.audio-impl \
     audioadsprpcd \
     audiohalservice.qti \
