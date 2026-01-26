@@ -70,6 +70,7 @@ PRODUCT_PACKAGES += \
     libagm_pcm_plugin \
     libagmipcservice \
     libalsautilsv2.vendor \
+    libaudioaidlcommon.vendor \
     libaudiochargerlistener \
     libaudioutils_shim \
     libbatterylistener \
