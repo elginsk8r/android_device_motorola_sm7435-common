@@ -1,15 +1,8 @@
-# Chipset-specific file
-import /vendor/etc/init/hw/init.mmi.chipset.rc
-
 # Target-specific file
 import /vendor/etc/init/hw/init.mmi.overlay.rc
 
 on early-boot
     write /sys/module/subsystem_restart/parameters/disable_restart_work 0x0
-
-on init
-    chown system log /proc/driver/mmi_annotate
-    chmod 0640 /proc/driver/mmi_annotate
 
 on early-init
     # Need to wait for platform path for UTAGs driver to succeed
@@ -22,7 +15,6 @@ on early-init
     # Map oem properties, this must follow
     # execution of vendor.oem-hw-sh to set
     # required properties.
-    setprop ro.carrier ${ro.boot.carrier}
     setprop ro.sf.lcd_density ${ro.boot.lcd_density}
     setprop ro.vendor.fsg-id ${ro.boot.fsg-id}
     setprop ro.vendor.hw.device ${ro.boot.device}
@@ -37,6 +29,7 @@ on early-init
     setprop ro.vendor.boot.powerup_reason ${ro.boot.powerup_reason}
     setprop ro.vendor.boot.bl_state ${ro.boot.bl_state}
     setprop ro.vendor.boot.serialno ${ro.boot.serialno}
+    setprop ro.vendor.boot.nal_id ${ro.boot.nal_id}
     setprop ro.vendor.zygote ${ro.zygote}
     setprop persist.radio.multisim.config ${persist.vendor.radio.multisim.config}
 
@@ -50,6 +43,7 @@ on early-init
     write /sys/module/msm_show_resume_irq/parameters/debug_mask 1
 
 on fs
+    insmod /vendor/lib/modules/cci_intf.ko
     mkdir /mnt/vendor/persist/fps 0770 system system
     exec_start vendor.ident-fps-sh
 
@@ -72,7 +66,6 @@ on post-fs && property:ro.vendor.hw.fsg_super_image=yes
 
 on post-fs
     mkdir /mnt/vendor/persist/camera 0755 vendor_tcmd vendor_tcmd
-    mkdir /mnt/vendor/persist/camera/iqtuning 0755 vendor_tcmd vendor_tcmd
     mkdir /mnt/vendor/persist/camera/dualcal 0775 camera vendor_tcmd
     mkdir /mnt/vendor/persist/camera/focus 0775 camera vendor_tcmd
     mkdir /mnt/vendor/persist/camera/ledcal 0775 camera vendor_tcmd
@@ -81,13 +74,14 @@ on post-fs
     mkdir /mnt/vendor/persist/batt_health 0775 vendor_pwric vendor_pwric
     mkdir /mnt/vendor/persist/mdm 0770 radio radio
     mkdir /mnt/vendor/persist/factory 0755 vendor_tcmd vendor_tcmd
-    mkdir /mnt/vendor/persist/factory/audio 0755 vendor_tcmd system
+    mkdir /mnt/vendor/persist/factory/audio 0775 vendor_tcmd audio
     mkdir /mnt/vendor/persist/factory/wlan 0755 vendor_tcmd vendor_tcmd
     mkdir /mnt/vendor/persist/factory/regulatory 0755 vendor_tcmd system
     mkdir /mnt/vendor/persist/public 0755 vendor_tcmd vendor_tcmd
     mkdir /mnt/vendor/persist/public/att_dm 0775 radio vendor_tcmd
     mkdir /mnt/vendor/persist/public/hiddenmenu 0775 radio vendor_tcmd
     mkdir /mnt/vendor/persist/public/hiddenmenu/data 0775 system vendor_tcmd
+    mkdir /mnt/vendor/persist/uwb 0775 vendor_tcmd uwb
     mkdir /persist/public/locale 0700 system system
     mkdir /persist/public/omadm 0700 radio radio
     mkdir /persist/public/svcs 0770 system system
@@ -131,6 +125,10 @@ on post-fs
     chmod 0660 /sys/class/capsense/calibrate
 
 on post-fs-data
+    setprop ro.product.model_for_attestation ${ro.product.vendor.model}
+    setprop ro.product.brand_for_attestation ${ro.product.vendor.brand}
+    setprop ro.product.name_for_attestation ${ro.product.vendor.name}
+
     # Setup folders for security
     mkdir /mnt/vendor/persist/security 02770 drmrpc drmrpc
     mkdir /data/vendor/dbvc 0750 vendor_tcmd shell
@@ -138,58 +136,6 @@ on post-fs-data
 
     # Setup folder for Pre-Activation Kill Switch app (PAKS)
     mkdir /mnt/vendor/persist/paks 02770 vendor_tcmd vendor_tcmd
-
-    chown system system /sys/class/power_supply/battery/cycle_count
-    chmod 0664 /sys/class/power_supply/battery/cycle_count
-    chmod 0664 /sys/class/power_supply/battery/charge_control_limit
-
-    # Permissions for Factory Test of Charging Paths
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/battery/device/force_chg_auto_enable
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/battery/device/force_chg_ibatt
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/battery/device/force_chg_itrick
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/battery/device/force_chg_iusb
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/battery/device/force_chg_idc
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/battery/device/force_chg_usb_suspend
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/battery/device/force_chg_fail_clear
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/battery/device/force_chg_usb_otg_ctl
-
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/mmi_battery/device/force_chg_auto_enable
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/mmi_battery/device/force_chg_ibatt
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/mmi_battery/device/force_chg_itrick
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/mmi_battery/device/force_chg_iusb
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/mmi_battery/device/force_chg_idc
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/mmi_battery/device/force_chg_usb_suspend
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/mmi_battery/device/force_chg_fail_clear
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/mmi_battery/device/force_chg_usb_otg_ctl
-
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/wireless/device/chip_id
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/wireless/current_now
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/wireless/voltage_now
-    chown vendor_pwric vendor_pwric /sys/class/power_supply/wireless/voltage_max
-    chmod 0664 /sys/class/power_supply/wireless/voltage_max
-
-    chown root vendor_mod /sys/module/qpnp_smbcharger_mmi/parameters/eb_rechrg_start_soc
-    chown root vendor_mod /sys/module/qpnp_smbcharger_mmi/parameters/eb_rechrg_stop_soc
-    chown root vendor_mod /sys/module/qpnp_smbcharger_mmi/parameters/eb_attach_start_soc
-    chown root vendor_mod /sys/module/qpnp_smbcharger_mmi/parameters/eb_attach_stop_soc
-    chown root vendor_mod /sys/module/qpnp_smbcharger_mmi/parameters/eb_low_start_soc
-    chown root vendor_mod /sys/module/qpnp_smbcharger_mmi/parameters/eb_low_stop_soc
-    chown root vendor_mod /sys/module/qpnp_smbcharger_mmi/parameters/eb_on_sw
-
-    chmod 0664 /sys/module/qpnp_smbcharger_mmi/parameters/eb_rechrg_start_soc
-    chmod 0664 /sys/module/qpnp_smbcharger_mmi/parameters/eb_rechrg_stop_soc
-    chmod 0664 /sys/module/qpnp_smbcharger_mmi/parameters/eb_attach_start_soc
-    chmod 0664 /sys/module/qpnp_smbcharger_mmi/parameters/eb_attach_stop_soc
-    chmod 0664 /sys/module/qpnp_smbcharger_mmi/parameters/eb_low_start_soc
-    chmod 0664 /sys/module/qpnp_smbcharger_mmi/parameters/eb_low_stop_soc
-    chmod 0664 /sys/module/qpnp_smbcharger_mmi/parameters/eb_on_sw
-
-    chown root vendor_mod /sys/class/power_supply/usb/usb_priority
-    chmod 0660 /sys/class/power_supply/usb/usb_priority
-    chown root vendor_mod /sys/module/dwc3_msm/parameters/usb_priority
-    chmod 0660 /sys/module/dwc3_msm/parameters/usb_priority
-    chown root vendor_mod /sys/module/usbnet/parameters/force_on
-    chmod 0666 /sys/module/usbnet/parameters/force_on
 
     # Setup folder for native to transfer data to NativeDropBoxAgent
     mkdir /data/vendor/dropbox-add 0730 log diag
@@ -223,22 +169,12 @@ on post-fs-data
     #Folder for hardware properties
     mkdir /data/vendor/hardware_revisions 0755 system system
 
-    # Imager tuning data for camera subsystem
-    mkdir /data/vendor/misc/imager 0771 camera camera
-
-    # Imager tuning metadata for camera subsystem
-    mkdir /data/vendor/misc/imager/metadata 0771 camera camera
-
     # NFC vendor data
     mkdir /data/vendor/nfc 0770 nfc nfc
 
     # Required by FingerPrint Cards (FPC) via init so we don't need to give qseecomd or fingerprintd permissions to create them
     mkdir /data/vendor/fpc 0700 system system
     mkdir /data/vendor/.fps 0770 system vendor_fingerp
-
-    # Required by touchRec for write the touch data
-    mkdir /data/vendor/touchrec 0773 input input
-    chmod 0664 /data/vendor/touchrec/raw_data.bin
 
 on boot
    # restore default console_loglevel to KERN_DEBUG
@@ -264,14 +200,14 @@ on boot
    chown audio audio /sys/kernel/aov/register
    chown audio audio /sys/kernel/aov/event
 
+   # Quiet binder logs
+   write /sys/module/binder/parameters/debug_mask 0x5
+
    # Clear cooldown state
    mkdir /mnt/vendor/persist/chargeonly 0770 system system
    write /mnt/vendor/persist/chargeonly/cooldown n
    chown system system /mnt/vendor/persist/chargeonly/cooldown
    chmod 0660 /mnt/vendor/persist/chargeonly/cooldown
-
-   # Quiet binder logs
-   write /sys/module/binder/parameters/debug_mask 0x5
 
    # Change owner ship of l5 laser calibration
    chown camera vendor_tcmd /mnt/vendor/persist/camera/focus/offset_cal
@@ -281,17 +217,23 @@ on boot
    chown system system /sys/class/capsense/reset
    chown system system /sys/class/capsense/int_state
 
-    # Charger
-    wait /sys/class/power_supply/battery/device/force_charging_disable
-    chmod 0664 /sys/class/power_supply/battery/device/force_charging_disable
-    chown system system /sys/class/power_supply/battery/device/force_charging_disable
+on charger
+    trigger early-fs
+    trigger fs
+    trigger post-fs
+    trigger late-fs
+    trigger post-fs-data
+    trigger moto-charger
+    trigger tks-charger
 
-on property:sys.boot_completed=1
-    # Enable PowerHAL hint processing
-    setprop vendor.powerhal.init 1
+on moto-charger
+    class_stop main
+    class_stop late_start
 
-on property:sys.boot_completed=1 && property:ro.vendor.zram.swapon=true
-    write /sys/block/zram0/comp_algorithm lz4
+on tks-charger && property:persist.sys.tksautoboot=1
+    setprop sys.powerctl "reboot,tks-charger"
+
+on property:sys.boot_completed=1 && property:ro.vendor.zram.product_swapon=""
     write /proc/sys/vm/page-cluster 0
     swapon_all /vendor/etc/fstab.qcom
     write /proc/sys/vm/swappiness 100
@@ -305,6 +247,13 @@ service vendor.mmi-boot-sh /vendor/bin/init.mmi.boot.sh
 # set rkp csr indicatory property
 on property:ro.vendor.mot.hw.rkp_csr_uploaded=* && property:sys.boot_completed=1
     setprop ro.rkp.csr_uploaded ${ro.vendor.mot.hw.rkp_csr_uploaded}
+
+# translate MMI property in order to keep the consistent with QCOM
+on property:ro.vendor.hw.dualsim=true
+   setprop persist.radio.multisim.config dsds
+
+on property:ro.vendor.hw.dualsim=false
+   setprop persist.radio.multisim.config ""
 
 on property:sys.sysctl.swappiness=*
     write /proc/sys/vm/swappiness ${sys.sysctl.swappiness}
@@ -369,3 +318,12 @@ on property:vendor.hw.touch.status="dead"
 
 on property:vendor.hw.touch.status="ready"
     start vendor.touch-ready-sh
+
+service vendor.charge_only_mode /vendor/bin/charge_only_mode
+    user root
+    group graphics system input log
+    disabled
+
+on property:vendor.ultrasound.cal=1
+   chmod 0771 /mnt/vendor/persist/factory/audio/upd_calib_v2
+   chmod 0771 /mnt/vendor/persist/factory/audio/aop_calib_v2
