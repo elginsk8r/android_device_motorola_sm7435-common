@@ -61,7 +61,7 @@ on moto-charger
 
 service vendor.charge_only_mode /vendor/bin/charge_only_mode
     user root
-    group graphics system input
+    group graphics system input log
     capabilities SYS_BOOT
     disabled
 
@@ -77,7 +77,7 @@ service vendor.thermal-com /vendor/bin/thermal-engine-v2 --minimode
 
 # support clear batt_firstusagedate flag
 on property:sys.clear_batt_first_usage_date=true
-    write /proc/config/all/new batt_firstusagedateX
+    write /proc/config/all/new batt_firstusagedate:strX
     wait  /proc/config/batt_firstusagedate/ascii
     write /proc/config/batt_firstusagedate/ascii 1
     write /mnt/vendor/persist/batt_health/first_usage_date 0

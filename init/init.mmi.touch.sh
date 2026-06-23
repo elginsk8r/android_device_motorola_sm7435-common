@@ -186,15 +186,58 @@ wait_for_poweron()
 
 setup_permissions()
 {
+	local bootmode=$(getprop $bootmode_property 2> /dev/null)
+	local selinux=$(getprop ro.boot.selinux 2> /dev/null)
+	local key_path
+	local key_files
+	local entry
+	if [[ ("$selinux" == "permissive") || ("$bootmode" == "mot-factory") ]]; then
+		debug "loosen permissions to $touch_vendor files"
+		case $touch_vendor in
+			  samsung)	key_path="/sys/devices/virtual/sec/sec_ts/"
+						key_files=$(ls $key_path 2>/dev/null)
+						# Set optional permissions to LSI touch tests
+						[ -f $touch_path/size ] && chown root:vendor_tcmd $touch_path/size
+						[ -f $touch_path/address ] && chown root:vendor_tcmd $touch_path/address
+						[ -f $touch_path/write ] && chown root:vendor_tcmd $touch_path/write
+						;;
+			   pixart)	key_path="/sys/bus/i2c/devices/1-0033"
+						key_files="selftest selftest_bin"
+						;;
+			synaptics)	key_path=$touch_path
+						key_files=$(prepend f54 `ls $touch_path/f54/ 2>/dev/null`)
+						key_files=$key_files"reporting query stats";;
+			focaltech)	key_path="/proc/"
+						key_files="ftxxxx-debug";;
+			   ilitek)	key_path="/proc/ilitek"
+						key_files="ioctl";;
+			   goodix)	key_path="/proc/"
+						key_files="gmnode"
+						if [[ "$touch_instance" == "GTx5" ]] || [[ "$touch_instance" == "GTx8" ]]; then
+							key_path="/dev/"
+							key_files="gtp_tools"
+						fi
+						;;
+			   stmicro)	key_path="/proc/fts/"
+						key_files="driver_test"
+						# Set optional permissions to LSI touch tests
+						[ -f $touch_path/calibrate ] && chown root:vendor_tcmd $touch_path/calibrate
+						;;
+		esac
+		for entry in $key_files; do
+			chmod 0666 $key_path/$entry
+			debug "change permissions of $key_path/$entry"
+		done
+	fi
 	# Set permissions to enable factory touch tests
-	chgrp vendor_tcmd $touch_path/drv_irq
-	chgrp vendor_tcmd $touch_path/hw_irqstat
-	chgrp vendor_tcmd $touch_path/reset
+	chown root:vendor_tcmd $touch_path/drv_irq
+	chown root:vendor_tcmd $touch_path/hw_irqstat
+	chown root:vendor_tcmd $touch_path/reset
 
 	# Set permissions to allow Bug2Go access to touch statistics
-	chgrp log $touch_path/stats
+	chown root:log $touch_path/stats
 	# Erase is optional
-	[ -f $touch_path/erase_all ] && chgrp vendor_tcmd $touch_path/erase_all
+	[ -f $touch_path/erase_all ] && chown root:vendor_tcmd $touch_path/erase_all
 }
 
 read_touch_property()
@@ -558,6 +601,85 @@ process_touch_instance()
 	setup_permissions
 }
 
+
+set_ro_hw_properties_exponent_panel()
+{
+	local panelname_path=/sys/class/drm/card0-DSI-1/panelName
+	local panelname_cli_path=/sys/class/drm/card0-DSI-2/panelName
+	local bl_exponent_path=/sys/class/drm/card0-DSI-1/panelBLExponent
+	local bl_exponent_prop=ro.vendor.hw.curve
+
+	local prim_declare_path=/sys/class/drm/card0-DSI-1/panelDeclare
+	local cli_declare_path=/sys/class/drm/card0-DSI-2/panelDeclare
+	local prim_declare_prop=ro.vendor.hw.primary_declare
+	local cli_declare_prop=ro.vendor.hw.cli_declare
+
+	local panelname
+	local wait_cnt=0
+	lid_property=ro.vendor.mot.hw.lid
+	lid=1
+
+	has_lid=$(getprop $lid_property 2> /dev/null)
+
+	local prim_enable_brightnesszone_path=/sys/class/drm/card0-DSI-1/panelEnableSfBrightZone
+	local prim_enable_brightnesszone_prop=ro.vendor.hw.prim_enable_sf_brightnesszone
+
+	local cli_enable_brightnesszone_path=/sys/class/drm/card0-DSI-2/panelEnableSfBrightZone
+	local cli_enable_brightnesszone_prop=ro.vendor.hw.cli_enable_sf_brightnesszone
+
+	while [ "$wait_cnt" -lt 15 ]; do
+		if [ -e $panelname_path ]; then
+			panelname=$(cat $panelname_path)
+			panelBLExponent=$(cat $bl_exponent_path)
+			setprop $bl_exponent_prop "$panelBLExponent"
+			notice "setprop $bl_exponent_prop as $panelBLExponent for panel [$panelname]"
+			if [ -e $prim_declare_path ]; then
+			    prim_declare_str=$(cat $prim_declare_path)
+			    setprop $prim_declare_prop "$prim_declare_str"
+			    notice "setprop $prim_declare_prop as $prim_declare_str for panel [$panelname]"
+			fi
+			if [ -e $prim_enable_brightnesszone_path ]; then
+			    prim_enable_brightnesszone_str=$(cat $prim_enable_brightnesszone_path)
+				if [ $prim_enable_brightnesszone_str -eq 1 ]; then
+			    setprop $prim_enable_brightnesszone_prop true
+			    notice "setprop $prim_enable_brightnesszone_prop as true"
+				fi
+				if [ $prim_enable_brightnesszone_str -eq 0 ]; then
+			    setprop $prim_enable_brightnesszone_prop false
+			    notice "setprop $prim_enable_brightnesszone_prop as false"
+				fi
+			fi
+
+			if [ -e $cli_enable_brightnesszone_path ]; then
+			    cli_enable_brightnesszone_str=$(cat $cli_enable_brightnesszone_path)
+				if [ $cli_enable_brightnesszone_str -eq 1 ]; then
+			    setprop $cli_enable_brightnesszone_prop true
+			    notice "setprop $cli_enable_brightnesszone_prop as true"
+				fi
+				if [ $cli_enable_brightnesszone_str -eq 0 ]; then
+			    setprop $cli_enable_brightnesszone_prop false
+			    notice "setprop $cli_enable_brightnesszone_prop as false"
+				fi
+			fi
+			if [ $has_lid -eq $lid ]
+			then
+			    if [ -e $panelname_cli_path -a -e $cli_declare_path ] ; then
+			        panelname=$(cat $panelname_cli_path)
+			        cli_declare_str=$(cat $cli_declare_path)
+			        setprop $cli_declare_prop "$cli_declare_str"
+			        notice "setprop $cli_declare_prop as $cli_declare_str for panel [$panelname]"
+			        break;
+			    fi
+			else
+			    break;
+			fi
+		fi
+		notice "waiting for panelname, wait_cnt is $wait_cnt, has_lid is $has_lid"
+		sleep 1;
+		wait_cnt=$((wait_cnt+1))
+	done
+}
+
 # Main starts here
 query_panel_info
 load_driver_modules
@@ -583,6 +705,9 @@ if [ -f /sys/bus/i2c/devices/1-0033/vendor ]; then
 fi
 
 # check if need to reload modules
+
+# set exponent backlight property
+set_ro_hw_properties_exponent_panel
 
 wait
 debug "all background processes completed"
