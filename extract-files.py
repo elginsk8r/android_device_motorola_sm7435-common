@@ -20,7 +20,6 @@ from extract_utils.main import (
 namespace_imports = [
     'device/motorola/sm6475-common',
     'hardware/motorola',
-    'hardware/qcom-caf/common/libqti-perfd-client',
     'hardware/qcom-caf/sm8450',
     'hardware/qcom-caf/wlan',
     'vendor/qcom/opensource/commonsys-intf/display',
@@ -43,6 +42,7 @@ lib_fixups: lib_fixups_user_type = {
         'vendor.qti.hardware.qccsyshal@1.0',
         'vendor.qti.hardware.qccsyshal@1.1',
         'vendor.qti.hardware.qccvndhal@1.0',
+        'vendor.qti.qspmhal@1.0',
         'vendor.qti.hardware.wifidisplaysession@1.0',
         'vendor.qti.imsrtpservice@3.0',
     ): lib_fixup_vendor_suffix,
@@ -69,9 +69,7 @@ blob_fixups: blob_fixups_user_type = {
     ('vendor/etc/media_codecs_parrot_v0.xml', 'vendor/etc/media_codecs_parrot_v1.xml',
         'vendor/etc/media_codecs_parrot_v2.xml', 'vendor/etc/media_codecs_ravelin.xml'): blob_fixup()
         .regex_replace('.*media_codecs_(google_audio|google_c2|google_telephony|google_video|vendor_audio|dolby_audio).*\n', ''),
-    'vendor/etc/public.libraries.txt': blob_fixup()
-        .regex_replace('libqti-perfd-client.so\n', ''),
-    ('vendor/lib64/libdpps.so', 'vendor/lib64/libsnapdragoncolor-manager.so'): blob_fixup()
+    ('vendor/bin/poweropt-service', 'vendor/lib64/libdpps.so', 'vendor/lib64/libsnapdragoncolor-manager.so'): blob_fixup()
         .replace_needed('libtinyxml2.so', 'libtinyxml2-v34.so'),
     ('vendor/lib64/libgarden.so', 'vendor/lib64/libgarden_haltests_e2e.so'): blob_fixup()
         .replace_needed('android.hardware.gnss-V1-ndk_platform.so', 'android.hardware.gnss-V1-ndk.so')
