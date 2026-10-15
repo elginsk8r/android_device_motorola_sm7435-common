@@ -167,3 +167,9 @@ fi
 notice "RKP CSR file on device is: $rkp_csr_state"
 unset $rkp_complete_file
 unset $rkp_csr_state
+
+qca_ax_module_path="/sys/module/qca_cld3_qca6750"
+if [ -d $qca_ax_module_path ]; then
+	notice "Enable support for WiFi 6Ghz"
+	setprop vendor.wifi.chipset.support_ax 1
+fi
