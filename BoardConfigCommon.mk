@@ -62,8 +62,6 @@ TARGET_NO_BOOTLOADER := true
 # DTB / DTBO
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_USES_QCOM_MERGE_DTBS_SCRIPT := true
-TARGET_NEEDS_DTBOIMAGE := true
-TARGET_MERGE_DTBS_WILDCARD ?= parrot*base
 
 # Filesystem
 TARGET_FS_CONFIG_GEN := $(COMMON_PATH)/config.fs
@@ -91,78 +89,21 @@ BOARD_BOOTCONFIG += \
     androidboot.vendor.qspa=true
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_SEPARATED_DTBO := true
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_RAMDISK_USE_LZ4 := true
 BOARD_USES_GENERIC_KERNEL_IMAGE := true
-TARGET_KERNEL_SOURCE := kernel/motorola/sm6475
-TARGET_KERNEL_CONFIG := \
-    gki_defconfig \
-    vendor/parrot_perf.config \
-    vendor/ext_config/moto-parrot.config
+TARGET_KERNEL_BAZEL_FLAGS := --//vendor/motorola/sm8450-kernel:mmi_product=$(TARGET_BOOTLOADER_BOARD_NAME)
+TARGET_KERNEL_PLATFORM_TARGET := $(TARGET_BOOTLOADER_BOARD_NAME)
+TARGET_KERNEL_SOURCE := vendor/motorola/sm8450-build
 TARGET_KERNEL_VERSION := 6.6
 
-TARGET_KERNEL_EXT_MODULE_ROOT := kernel/motorola/sm6475-modules
-
 # Kernel Modules
-BOARD_SYSTEM_KERNEL_MODULES_BLOCKLIST_FILE := $(TARGET_KERNEL_SOURCE)/modules.systemdlkm_blocklist.msm.parrot
 BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(COMMON_PATH)/modules.load))
-BOARD_VENDOR_KERNEL_MODULES_BLOCKLIST_FILE := $(TARGET_KERNEL_SOURCE)/modules.vendor_blocklist.msm.parrot
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(COMMON_PATH)/modules.load.vendor_boot))
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_BLOCKLIST_FILE := $(BOARD_VENDOR_KERNEL_MODULES_BLOCKLIST_FILE)
 BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(COMMON_PATH)/modules.load.recovery))
 BOOT_KERNEL_MODULES := $(BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD)
-
-TARGET_KERNEL_EXT_MODULES := \
-    qcom/opensource/mmrm-driver \
-    qcom/opensource/mm-drivers/msm_ext_display \
-    qcom/opensource/mm-drivers/sync_fence \
-    qcom/opensource/audio-kernel \
-    qcom/opensource/securemsm-kernel \
-    qcom/opensource/synx-kernel \
-    qcom/opensource/camera-kernel \
-    qcom/opensource/data-kernel/drivers/smem-mailbox \
-    qcom/opensource/datarmnet-ext/mem \
-    qcom/opensource/dataipa/drivers/platform/msm \
-    qcom/opensource/datarmnet/core \
-    qcom/opensource/datarmnet-ext/aps \
-    qcom/opensource/datarmnet-ext/offload \
-    qcom/opensource/datarmnet-ext/perf \
-    qcom/opensource/datarmnet-ext/perf_tether \
-    qcom/opensource/datarmnet-ext/sch \
-    qcom/opensource/datarmnet-ext/shs \
-    qcom/opensource/datarmnet-ext/wlan \
-    qcom/opensource/display-drivers/msm \
-    qcom/opensource/dsp-kernel \
-    qcom/opensource/graphics-kernel \
-    qcom/opensource/spu-kernel \
-    qcom/opensource/video-driver \
-    qcom/opensource/wlan/platform \
-    qcom/opensource/wlan/qcacld-3.0/.adrastea \
-    qcom/opensource/wlan/qcacld-3.0/.qca6750 \
-    qcom/opensource/bt-kernel \
-    nxp/opensource/driver \
-    st/opensource/driver
-
-TARGET_KERNEL_EXT_MODULES += \
-    motorola/drivers/mmi_annotate \
-    motorola/drivers/mmi_info \
-    motorola/drivers/power/bm_adsp_ulog \
-    motorola/drivers/power/mmi_charger \
-    motorola/drivers/power/qti_glink_charger \
-    motorola/drivers/power/qpnp_adaptive_charge \
-    motorola/drivers/misc/utag \
-    motorola/drivers/misc/mmi_stow \
-    motorola/drivers/mmi_relay \
-    motorola/drivers/misc/mmi_sys_temp \
-    motorola/drivers/regulator/dio8015 \
-    motorola/drivers/sensors \
-    motorola/drivers/misc/hall \
-    motorola/drivers/misc/sx937x_multi \
-    motorola/drivers/input/touchscreen/touchscreen_mmi \
-    motorola/drivers/input/touchscreen/goodix_berlin_mmi \
-    motorola/drivers/input/misc/goodix_fod_mmi \
-    motorola/drivers/input/misc/rbs_fod_mmi \
-    motorola/drivers/moto_netopt/con_dfpar
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
